@@ -2,7 +2,7 @@
 
 A secure baseline for a Discord server. Every recommendation comes with a check to run and a fix to apply, so an owner can audit and configure a server without guessing.
 
-**Version 0.1.0 (draft)** · 109 controls in 10 sections · by Peter Derouen · published by [Smithy](https://github.com/smithy-org)
+**Version 0.1.1 (draft)** · 109 controls in 10 sections · by Peter Derouen · published by [Smithy](https://github.com/smithy-org)
 
 ## What's in it
 

@@ -4,7 +4,7 @@ Oct 28, 2026 · Peter Derouen
 
 This benchmark gives a secure baseline for a Discord server and, for each recommendation, a check to run and a fix to apply, so an owner can audit and configure a server without guessing.
 
-**Version 0.1.0 (draft).** Versioning follows semantic versioning; see Appendix F.
+**Version 0.1.1 (draft).** Versioning follows semantic versioning; see Appendix F.
 
 ## Overview
 
@@ -131,7 +131,7 @@ Menu paths use the form Server Settings > Safety Setup. Discord moves items betw
 | 3.3 | Restrict member pruning to administrators | L1 | CAT II | Manual |
 | 3.4 | Enable Activity Alerts | L1 | CAT II | Manual |
 | 3.5 | Send alerts to a private staff channel | L1 | CAT III | Automated |
-| 3.6 | Require CAPTCHA for suspicious accounts before they join | L2 | CAT II | Manual |
+| 3.6 | Turn on Raid Protection alerts | L2 | CAT II | Manual |
 | 3.7 | Require CAPTCHA for everyone during a suspected raid | L2 | CAT II | Manual |
 | 3.8 | Hide DMs from suspicious users | L1 | CAT III | Manual |
 | 3.9 | Filter DMs from unknown users | L2 | CAT III | Manual |
@@ -162,7 +162,7 @@ Menu paths use the form Server Settings > Safety Setup. Discord moves items betw
 | 5.10 | Remove unused, duplicate, and overbroad roles | L1 | CAT III | Automated |
 | 5.11 | Remove staff roles promptly when someone leaves | L1 | CAT II | Manual |
 | 5.12 | Do not let anyone mention powerful roles | L2 | CAT III | Automated |
-| 5.13 | Phase in permissions with account leveling | L2 | CAT III | Manual |
+| 5.13 | Phase in permissions by hand | L2 | CAT III | Manual |
 | 5.14 | Check access with View Server as Role | L1 | CAT III | Manual |
 | 6.1 | Make restricted categories private | L1 | CAT I | Automated |
 | 6.2 | Keep every channel in a private category synced to it | L1 | CAT I | Automated |
@@ -178,7 +178,7 @@ Menu paths use the form Server Settings > Safety Setup. Discord moves items betw
 | 6.12 | Keep an access list for each private area | L1 | CAT II | Manual |
 | 6.13 | Archive or delete inactive channels | L2 | CAT III | Manual |
 | 7.1 | Keep an inventory of apps, each with an owner and purpose | L1 | CAT II | Manual |
-| 7.2 | Allow only verified apps | L1 | CAT II | Manual |
+| 7.2 | Prefer verified apps and record exceptions | L1 | CAT II | Manual |
 | 7.3 | Give each bot only the permissions it uses | L1 | CAT I | Automated |
 | 7.4 | Keep each bot role to its bot and below human admin roles | L2 | CAT III | Manual |
 | 7.5 | Restrict who can run sensitive bot commands | L2 | CAT II | Manual |
@@ -473,9 +473,9 @@ These controls decide who can join the server and how visible it is to the publi
 | High (3) | Medium, plus ten minutes of server membership. |
 | Highest (4) | High, plus a verified phone number on the account. |
 
-**Rationale:** Throwaway and newly made accounts are the usual source of spam and raids. Discord recommends at least Low for any server that posts an invite link publicly; SEAL recommends at least Medium. This benchmark uses Medium as the L1 floor.
+**Rationale:** Throwaway and newly made accounts are the usual source of spam and raids. Discord's raid guidance recommends Low for basic security on public servers; SEAL recommends at least Medium. This benchmark uses Medium as the L1 floor, which is stricter than Discord's default advice. A server that cannot accept that friction may use Low and record the exception.
 
-**Impact:** Brand-new accounts must wait before chatting. Members who hold any role, and moderators and administrators, are exempt, so granting a role bypasses this check.
+**Impact:** Brand-new accounts must wait before chatting. Administrators and moderators with the right permissions can post regardless of the level.
 
 **Audit:** Server Settings > Safety Setup > DM and Spam Protection > Verification Level (a non-Community server shows it under Safety Setup > Verification Level; mobile: Server Settings > Moderation). API: verification\_level is 2 or higher.
 
@@ -483,7 +483,7 @@ These controls decide who can join the server and how visible it is to the publi
 
 **Default / current value:** Record during audit.
 
-**References:** S1, S3, S7, S9, S10
+**References:** S1, S3, S7, S9, S10, S15
 
 ### 2.2 Set the verification level to Highest on Moderate and High impact servers
 
@@ -493,13 +493,13 @@ These controls decide who can join the server and how visible it is to the publi
 
 **Rationale:** SOCOM recommends Highest. A phone number is hard to create in bulk, so it blocks most disposable accounts.
 
-**Impact:** Legitimate new members must add a phone number to chat, which many will refuse. Consider High (3) if that cost is too large. Members who hold a role are exempt, so staff can still grant roles to approved people.
+**Impact:** Legitimate new members must add a phone number to chat, which many will refuse. A verified phone number satisfies every lower level, so Highest adds the requirement only for accounts without one. Consider High (3) if that cost is too large. Administrators and moderators with the right permissions are not affected.
 
 **Audit:** API: verification\_level is 4 (or 3 where Highest is judged too costly and the exception is recorded).
 
-**Remediation:** Same menu as 2.1; choose Highest.
+**Remediation:** Same menu as 2.1; choose Highest. Discord suggests raising the level during a raid and returning it afterwards. If you do that, record it in the audit record (control 9.8).
 
-**References:** S12, S3
+**References:** S12, S3, S15
 
 ### 2.3 Scan media from all members with the explicit media filter
 
@@ -715,27 +715,27 @@ These controls live mostly under Server Settings > Safety Setup, which groups Mo
 
 **References:** S4, S6
 
-### 3.6 Require CAPTCHA for suspicious accounts before they join
+### 3.6 Turn on Raid Protection alerts
 
 **Profile:** L2 · **Severity:** CAT II · **Assessment:** Manual · **Applies to:** Server · **NIST 800-53:** SC-5, SI-4
 
-**Description:** Discord can challenge accounts it considers suspicious with a CAPTCHA at join.
+**Description:** Raid Protection watches join activity. When it detects a raid, it alerts a staff channel and requires CAPTCHA for new joiners for the next hour.
 
-**Rationale:** SEAL recommends it. It blocks automated accounts without affecting normal members.
+**Rationale:** Discord recommends it. The alert tells staff a raid has started, which is the trigger for the CAPTCHA in control 3.7.
 
-**Impact:** A small number of members see a challenge.
+**Impact:** Staff receive raid alerts. While a raid is active, new joiners see a CAPTCHA for an hour.
 
-**Audit:** Server Settings > Safety Setup > Raid Protection and CAPTCHA: CAPTCHA suspicious accounts before they join is on.
+**Audit:** Server Settings > Safety Setup > Raid Protection and CAPTCHA: an alert channel is set. If the option is not shown, Raid Protection is not yet available to this server; record Not applicable.
 
-**Remediation:** Turn it on.
+**Remediation:** Choose an alert channel and save. Discord is rolling this out gradually, so recheck if it is missing.
 
-**References:** S10
+**References:** S4, S15
 
 ### 3.7 Require CAPTCHA for everyone during a suspected raid
 
 **Profile:** L2 · **Severity:** CAT II · **Assessment:** Manual · **Applies to:** Server · **NIST 800-53:** SC-5, IR-4
 
-**Description:** When a raid is detected, all new accounts must complete a CAPTCHA, according to SEAL for one hour after detection.
+**Description:** When a raid is detected, Discord requires new joiners to complete a CAPTCHA for one hour after detection.
 
 **Rationale:** Slows a raid while staff respond.
 
@@ -745,7 +745,7 @@ These controls live mostly under Server Settings > Safety Setup, which groups Mo
 
 **Remediation:** Turn it on.
 
-**References:** S10
+**References:** S4, S15
 
 ### 3.8 Hide DMs from suspicious users
 
@@ -1049,7 +1049,7 @@ Roles decide what each person can do. Appendix A lists every permission with a r
 
 **Description:** Administrator grants every permission and bypasses every channel lock.
 
-**Rationale:** Discord calls it the most dangerous permission. SEAL advises one admin role with two or three members at most, and rarely any bot.
+**Rationale:** Discord calls it the most dangerous permission. SEAL says to restrict it to the minimum required roles. The limit of one admin role with very few members, and no bot holding it, is the author's judgment.
 
 **Impact:** Staff who need only some admin powers must get specific permissions instead.
 
@@ -1057,7 +1057,7 @@ Roles decide what each person can do. Appendix A lists every permission with a r
 
 **Remediation:** Remove Administrator from every other role and grant specific permissions.
 
-**References:** S2, S10, C1
+**References:** S2, S10, C1, Judgment
 
 ### 5.3 Restrict Manage Server, Manage Roles, Manage Channels, and Manage Webhooks
 
@@ -1143,15 +1143,15 @@ Roles decide what each person can do. Appendix A lists every permission with a r
 
 **Profile:** L1 · **Severity:** CAT II · **Assessment:** Manual · **Applies to:** Admin · **NIST 800-53:** AC-6(2)
 
-**Description:** People with Administrator use a lower role for everyday moderation and the admin role only for changes that need it.
+**Description:** People with Administrator do everyday moderation from an account that does not hold Administrator, and use a separate account only for admin changes.
 
 **Rationale:** SEAL tells moderators not to use admin accounts for everyday moderation. It limits what a hijacked session can do.
 
-**Impact:** Staff switch roles or accounts for admin tasks.
+**Impact:** Discord has no way to act with fewer permissions on one account, so this needs two accounts. Admins who cannot keep two accounts should record an exception.
 
 **Audit:** Ask each admin which account or role they use daily.
 
-**Remediation:** Create a moderator role or account for daily work.
+**Remediation:** Create a daily account with the moderator role and no Administrator role. Use the admin account only for admin tasks.
 
 **References:** S9
 
@@ -1219,19 +1219,19 @@ Roles decide what each person can do. Appendix A lists every permission with a r
 
 **References:** Judgment
 
-### 5.13 Phase in permissions with account leveling
+### 5.13 Phase in permissions by hand
 
 **Profile:** L2 · **Severity:** CAT III · **Assessment:** Manual · **Applies to:** Server · **NIST 800-53:** AC-2, AC-6
 
-**Description:** New members start with few permissions and gain more over time or by approval.
+**Description:** New members start with few permissions and gain more only when staff grant them. Discord has no built-in account leveling, so this is a manual process.
 
 **Rationale:** SEAL recommends leveling so a newly joined account cannot do much.
 
-**Impact:** Members wait or must be approved.
+**Impact:** Staff approve each step, which takes time.
 
-**Audit:** A defined path exists from new member to full member, enforced by a role or bot.
+**Audit:** A written path exists from new member to full member, and staff apply it by hand.
 
-**Remediation:** Create the intermediate roles and a way to promote.
+**Remediation:** Create the intermediate roles and write the promotion rule. Staff grant each role by hand.
 
 **References:** S10
 
@@ -1483,11 +1483,11 @@ Apps, bots, and webhooks act with their own permissions and are common points of
 
 **References:** S10, C1
 
-### 7.2 Allow only verified apps
+### 7.2 Prefer verified apps and record exceptions
 
 **Profile:** L1 · **Severity:** CAT II · **Assessment:** Manual · **Applies to:** Admin · **NIST 800-53:** SA-9
 
-**Description:** Verified apps have been checked by Discord.
+**Description:** Verified apps have been checked by Discord. Discord has no per-server setting that allows only verified apps, so this is a staff rule.
 
 **Rationale:** SEAL says to confirm that all bots and apps are verified, and Discord's Moderator Academy says to treat a bot's developers as trusted parties.
 
@@ -1495,7 +1495,7 @@ Apps, bots, and webhooks act with their own permissions and are common points of
 
 **Audit:** Each installed app shows as verified, or has a recorded exception.
 
-**Remediation:** Replace or remove unverified apps.
+**Remediation:** Replace or remove unverified apps that have no recorded exception.
 
 **References:** S10, S2, C1
 
@@ -1539,13 +1539,13 @@ Apps, bots, and webhooks act with their own permissions and are common points of
 
 **Rationale:** SEAL says to restrict command permissions under Manage > Roles and Members, Channels, and Command Overrides.
 
-**Impact:** Members cannot run restricted commands.
+**Impact:** Members cannot run restricted commands. A command override can lock out the person who sets it, so allow the intended role before denying @everyone.
 
 **Audit:** Administrative and moderation commands are limited to staff roles and staff channels.
 
-**Remediation:** Set the overrides in the app's Manage screen.
+**Remediation:** Set the overrides in the app's Manage screen. Allow the intended role first, then deny @everyone, and test as a member (control 5.14).
 
-**References:** S10
+**References:** S10, S16
 
 ### 7.6 Remove inactive or unneeded apps
 
@@ -1709,7 +1709,7 @@ Community is an optional server mode that unlocks AutoMod rule editing, Server I
 
 **Remediation:** Enable rules screening in the server's Community settings.
 
-**References:** S10
+**References:** S10, S14
 
 ### 8.4 Make sure onboarding cannot assign privileged or private-area roles
 
@@ -1731,17 +1731,17 @@ Community is an optional server mode that unlocks AutoMod rule editing, Server I
 
 **Profile:** L2 · **Severity:** CAT II · **Assessment:** Manual · **Applies to:** Server · **NIST 800-53:** AC-2, SI-4
 
-**Description:** A verification bot or Discord's built-in CAPTCHA that new members must complete before seeing channels. SEAL describes filtering by account age and profile picture, and timing out members who do not finish.
+**Description:** Discord's built-in membership screening is Rules Screening (control 8.3), which requires Community. Stronger gating, such as account-age or profile-picture filters, needs a third-party verification bot. SEAL describes that approach, including timing out members who do not finish.
 
 **Rationale:** Adds a check that automated accounts fail.
 
-**Impact:** New members take an extra step. The verification bot becomes a trusted app, so controls 7.1 to 7.3 apply.
+**Impact:** New members take an extra step. Rules Screening adds no bot. A third-party verification bot becomes a trusted app, so controls 7.1 to 7.3 apply.
 
 **Audit:** A test account cannot see channels until it completes the step.
 
-**Remediation:** Configure the bot or built-in tool, and grant the member role only on completion.
+**Remediation:** Use Rules Screening (control 8.3), or configure a verification bot and grant the member role only on completion.
 
-**References:** S10
+**References:** S10, S14
 
 ### 8.6 Enable Server Insights and watch for anomalies
 
@@ -1837,7 +1837,7 @@ These controls make sure changes are recorded, someone looks at the record, and 
 
 **Impact:** The logging bot is a trusted app, so controls 7.1 to 7.3 apply. Logs may contain member data.
 
-**Audit:** Entries older than 45 days can be produced for a past change.
+**Audit:** A logging bot is installed, and its export runs on a schedule that keeps more than 45 days of entries.
 
 **Remediation:** Configure a logging bot and export on a schedule.
 
@@ -1940,7 +1940,7 @@ These controls follow SEAL's cold admin approach: the server owner is a dedicate
 
 **Description:** A separate Discord account, created on a factory-reset device with no other use, that holds ownership of the server.
 
-**Rationale:** If every day-to-day admin account is compromised, the cold account can still remove them and recover. Using it rarely keeps it from being phished.
+**Rationale:** If every day-to-day admin account is compromised, the cold account can still remove them and recover. Because it is used rarely, it has fewer chances to be phished.
 
 **Impact:** One extra device and two accounts to maintain.
 
@@ -2230,6 +2230,9 @@ Each control cites these keys in its References line. "Judgment" means the recom
 | S11 | [Discord, Securing your Discord account](https://discord.com/moderation/241-securing-your-discord-account) | MFA, password, devices, authorized apps |
 | S12 | [SAFEGUARD Digital Identity Protection Toolkit, Discord (Feb 2025), hosted by U.S. Special Operations Command (soc.mil); issuing office not stated](https://www.soc.mil/IdM/publications/docs/socialMedia/Discord.pdf) | Member privacy and safety settings |
 | S13 | Format models: [Chainguard, What are CIS Benchmarks](https://www.chainguard.dev/supply-chain-security-101/what-are-cis-benchmarks), [Cromwell, STIG compliance](https://cromwell-intl.com/open-source/stig-compliance/), [How to Harden Slack](https://howtoharden.com/guides/slack/) | Document structure: profile levels, CAT severity, check and fix, NIST mapping |
+| S14 | [Discord Support, Rules Screening FAQ](https://support.discord.com/hc/en-us/articles/1500000466882-Rules-Screening-FAQ) | Rules Screening requires Community, is Discord's only membership screen, and is bypassed by manual verification |
+| S15 | [Discord Support, How to Protect Your Server from Raids 101](https://support.discord.com/hc/en-us/articles/10989121220631-How-to-Protect-Your-Server-from-Raids-101) | Raid Protection alerts and CAPTCHA, Verification Level guidance for public servers, raid de-escalation |
+| S16 | [Discord Support, Command Permissions Lockout](https://support.discord.com/hc/en-us/articles/10952702911639-Command-Permissions-Lockout) | Command overrides can lock out the person who sets them |
 | Judgment | Author | Severity ratings, NIST mappings, level assignments, and recommendations with no direct source |
 
 **U.S. government guidance.** CISA and NIST publish nothing specific to Discord. These documents support the controls that cite them where the same principle applies to any online account or platform. Each was read on October 28, 2026.
@@ -2253,6 +2256,7 @@ Each control cites these keys in its References line. "Judgment" means the recom
 | --- | --- | --- |
 | 0.0.1 | 2026-10-28 | Initial document: summary tables of recommended settings |
 | 0.1.0 (draft) | 2026-10-28 | Rebuilt in the CIS Benchmark and DISA STIG style: profile levels, CAT severity, per-control fields (Description, Rationale, Impact, Audit, Remediation, References), NIST 800-53 mapping, 109 controls in 10 sections, member checklist, and appendices A to F |
+| 0.1.1 (draft) | 2026-11-22 | Wording and fact fixes from a feasibility review and a source check. Verification exemption claims corrected (2.1, 2.2); CAPTCHA control rewritten around Raid Protection (3.6); raid CAPTCHA attributed to Discord (3.7); SEAL member count in 5.2 replaced with a judgment; account-leveling control rewritten as manual (5.13); verified-apps control rewritten as a staff rule (7.2); command-override lockout step added (7.5); Rules Screening and raid sources added (S14 to S16); bare reference fixed (5.2) |
 
 **Counts in this version.** 109 controls: 66 L1 and 43 L2; 12 CAT I, 45 CAT II, and 52 CAT III; 36 Automated and 73 Manual.
 
@@ -2262,6 +2266,7 @@ Each control cites these keys in its References line. "Judgment" means the recom
 - Check every menu path and setting name in the Discord app. Discord renames settings often.
 - Confirm the SEAL "Moderate" versus Medium verification-level wording and the "members I may not know" DM filter label (control 1.9).
 - Have a second person review the severity ratings and NIST mappings. Both are the author's judgment.
+- Check every SEAL attribution in the Rationale fields against SEAL's pages. Two were checked for 0.1.1; the one in control 5.2 was wrong and is corrected.
 - Run the audit skill against a real server and note any control the data does not support.
 - Decide whether to map each control ID to a finding in the `discord-server-audit` skill.
 
