@@ -4,7 +4,7 @@ Oct 28, 2026 · Peter Derouen
 
 This benchmark gives a secure baseline for a Discord server and, for each recommendation, a check to run and a fix to apply, so an owner can audit and configure a server without guessing.
 
-**Version 0.1.2 (draft).** Versioning follows semantic versioning; see Appendix F.
+**Version 0.1.3 (draft).** Versioning follows semantic versioning; see Appendix F.
 
 ## Overview
 
@@ -1095,7 +1095,7 @@ Roles decide what each person can do. Appendix A lists every permission with a r
 
 **Profile:** L1 · **Severity:** CAT II · **Assessment:** Automated · **Applies to:** Moderator · **NIST 800-53:** AC-6
 
-**Description:** SEAL's moderator set is: View Channels, View Audit Log, View Server Insights, Kick Members, Ban Members, Timeout Members, Send Messages and Create Posts, Embed Links, Attach Files, Add Reactions, Add External Emoji, Use External Stickers, Manage Messages, Bypass Slowmode, Read Message History, and Request to Speak.
+**Description:** Give moderators these permissions, grouped by purpose. To see: View Channels, View Audit Log, View Server Insights, Read Message History. To act on members: Kick Members, Ban Members, Timeout Members, Manage Messages, Bypass Slowmode. To post: Send Messages and Create Posts, Embed Links, Attach Files, Add Reactions, Add External Emoji, Use External Stickers, Request to Speak. The set follows the moderator recommendation in SEAL's Discord guide (S9).
 
 **Rationale:** It lets moderators moderate without being able to change server structure.
 
@@ -1111,7 +1111,7 @@ Roles decide what each person can do. Appendix A lists every permission with a r
 
 **Profile:** L1 · **Severity:** CAT II · **Assessment:** Automated · **Applies to:** Member · **NIST 800-53:** AC-6
 
-**Description:** SEAL's set for ordinary members is: View Channels, Send Messages and Create Posts, Embed Links, Add Reactions, Read Message History, and Request to Speak. Discord's Moderator Academy lists others that are generally safe, such as Attach Files, Connect, and Speak.
+**Description:** Ordinary members need to see channels, read history, and post in them: View Channels, Read Message History, Send Messages and Create Posts, Embed Links, Add Reactions, and Request to Speak. The set follows the member recommendation in SEAL's Discord guide (S9). Discord's Moderator Academy lists other permissions that are generally safe, such as Attach Files, Connect, and Speak (S2).
 
 **Rationale:** A short list is easy to review and limits what a compromised member account can do.
 
@@ -1341,7 +1341,7 @@ This section covers how access is applied to channels. It is where a restricted 
 
 **Description:** An age-restricted channel requires members to confirm they are adults.
 
-**Rationale:** Discord requires channels with explicit content to carry the label, and age-restricted channels are exempt from the explicit media filter.
+**Rationale:** Discord requires channels with explicit content to carry the label. The explicit media filter does not apply to age-restricted channels.
 
 **Impact:** Members must confirm their age.
 
@@ -2215,6 +2215,8 @@ NIST SP 800-53 Rev. 5 does not describe Discord, so these mappings are the autho
 
 Each control cites these keys in its References line. "Judgment" means the recommendation is the author's own and no source states it directly.
 
+**Source authority.** Discord's own documentation is the primary source for any statement about how Discord behaves. NIST, CISA and SEAL are secondary. They supply the security principle or a recommendation, and where Discord's documentation does not cover a procedure, the control cites SEAL and says so. Standards and format sources describe layout only and state no requirements.
+
 | Key | Source | Used for |
 | --- | --- | --- |
 | S1 | [Discord, Four steps to a super safe server](https://discord.com/safety/360043653152-Four-steps-to-a-super-safe-server) | Verification level, explicit media filter, 2FA for moderation, Safety Setup basics |
@@ -2258,6 +2260,7 @@ Each control cites these keys in its References line. "Judgment" means the recom
 | 0.1.0 (draft) | 2026-10-28 | Rebuilt in the CIS Benchmark and DISA STIG style: profile levels, CAT severity, per-control fields (Description, Rationale, Impact, Audit, Remediation, References), NIST 800-53 mapping, 109 controls in 10 sections, member checklist, and appendices A to F |
 | 0.1.1 (draft) | 2026-11-22 | Wording and fact fixes from a feasibility review and a source check. Verification exemption claims corrected (2.1, 2.2); CAPTCHA control rewritten around Raid Protection (3.6); raid CAPTCHA attributed to Discord (3.7); SEAL member count in 5.2 replaced with a judgment; account-leveling control rewritten as manual (5.13); verified-apps control rewritten as a staff rule (7.2); command-override lockout step added (7.5); Rules Screening and raid sources added (S14 to S16); bare reference fixed (5.2) |
 | 0.1.2 (draft) | 2026-11-22 | Restored SEAL's two-or-three admin limit in 5.2, which 0.1.1 wrongly removed; 3.6 now notes SEAL's separate CAPTCHA option for suspicious accounts, which Discord's help does not name; GitHub Pages serves the guide. |
+| 0.1.3 (draft) | 2026-11-22 | Licence changed from CC BY 4.0 to CC BY-SA 4.0, because some recommendations are adapted from SEAL, which is CC BY-SA 4.0. Two SEAL permission lists (5.5, 5.6) and one Discord sentence (6.6) reworded to remove copied wording. Source authority stated in Appendix E: Discord primary, NIST, CISA and SEAL secondary. |
 
 **Counts in this version.** 109 controls: 66 L1 and 43 L2; 12 CAT I, 45 CAT II, and 52 CAT III; 36 Automated and 73 Manual.
 

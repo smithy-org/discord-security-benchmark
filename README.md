@@ -2,7 +2,7 @@
 
 A secure baseline for a Discord server. Every recommendation comes with a check to run and a fix to apply, so an owner can audit and configure a server without guessing.
 
-**Version 0.1.2 (draft)** · 109 controls in 10 sections · by Peter Derouen · published by [Smithy](https://github.com/smithy-org)
+**Version 0.1.3 (draft)** · 109 controls in 10 sections · by Peter Derouen · published by [Smithy](https://github.com/smithy-org)
 
 ## What's in it
 
@@ -37,4 +37,4 @@ Corrections are welcome. Open an issue or a pull request, and name the control I
 
 ## Licence
 
-[Creative Commons Attribution 4.0 International](LICENSE). Share and adapt it, including commercially, as long as you credit the author and say what you changed.
+[Creative Commons Attribution-ShareAlike 4.0 International](LICENSE). Share and adapt it, including commercially, as long as you credit the author, say what you changed, and license adaptations under the same terms. Some recommendations are adapted from SEAL's Discord guides, which are also CC BY-SA 4.0; Appendix E lists them.
