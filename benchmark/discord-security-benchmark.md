@@ -4,7 +4,7 @@ Oct 28, 2026 · Peter Derouen
 
 This benchmark gives a secure baseline for a Discord server and, for each recommendation, a check to run and a fix to apply, so an owner can audit and configure a server without guessing.
 
-**Version 0.1.1 (draft).** Versioning follows semantic versioning; see Appendix F.
+**Version 0.1.2 (draft).** Versioning follows semantic versioning; see Appendix F.
 
 ## Overview
 
@@ -721,7 +721,7 @@ These controls live mostly under Server Settings > Safety Setup, which groups Mo
 
 **Description:** Raid Protection watches join activity. When it detects a raid, it alerts a staff channel and requires CAPTCHA for new joiners for the next hour.
 
-**Rationale:** Discord recommends it. The alert tells staff a raid has started, which is the trigger for the CAPTCHA in control 3.7.
+**Rationale:** Discord recommends it. The alert tells staff a raid has started, which is the trigger for the CAPTCHA in control 3.7. SEAL also names a separate CAPTCHA option for suspicious accounts before they join (S10). Discord's help does not name that option, so check the UI before recording it.
 
 **Impact:** Staff receive raid alerts. While a raid is active, new joiners see a CAPTCHA for an hour.
 
@@ -729,7 +729,7 @@ These controls live mostly under Server Settings > Safety Setup, which groups Mo
 
 **Remediation:** Choose an alert channel and save. Discord is rolling this out gradually, so recheck if it is missing.
 
-**References:** S4, S15
+**References:** S4, S10, S15
 
 ### 3.7 Require CAPTCHA for everyone during a suspected raid
 
@@ -1049,13 +1049,13 @@ Roles decide what each person can do. Appendix A lists every permission with a r
 
 **Description:** Administrator grants every permission and bypasses every channel lock.
 
-**Rationale:** Discord calls it the most dangerous permission. SEAL says to restrict it to the minimum required roles. The limit of one admin role with very few members, and no bot holding it, is the author's judgment.
+**Rationale:** Discord calls it the most dangerous permission. SEAL says to restrict it to the minimum required roles and to keep no more than two or three holders, which limits the damage from one compromised account and keeps some redundancy (S10). One admin role with very few members, and no bot holding it, is the author's judgment.
 
 **Impact:** Staff who need only some admin powers must get specific permissions instead.
 
 **Audit:** Server Settings > Roles: exactly one role, or a documented few, has Administrator. API: count the roles with the Administrator permission. Read role membership from the Members tab, because the audit bot cannot list members without a privileged setting.
 
-**Remediation:** Remove Administrator from every other role and grant specific permissions.
+**Remediation:** Remove Administrator from every other role and grant specific permissions. Keep no more than two or three members with it.
 
 **References:** S2, S10, C1, Judgment
 
@@ -2257,6 +2257,7 @@ Each control cites these keys in its References line. "Judgment" means the recom
 | 0.0.1 | 2026-10-28 | Initial document: summary tables of recommended settings |
 | 0.1.0 (draft) | 2026-10-28 | Rebuilt in the CIS Benchmark and DISA STIG style: profile levels, CAT severity, per-control fields (Description, Rationale, Impact, Audit, Remediation, References), NIST 800-53 mapping, 109 controls in 10 sections, member checklist, and appendices A to F |
 | 0.1.1 (draft) | 2026-11-22 | Wording and fact fixes from a feasibility review and a source check. Verification exemption claims corrected (2.1, 2.2); CAPTCHA control rewritten around Raid Protection (3.6); raid CAPTCHA attributed to Discord (3.7); SEAL member count in 5.2 replaced with a judgment; account-leveling control rewritten as manual (5.13); verified-apps control rewritten as a staff rule (7.2); command-override lockout step added (7.5); Rules Screening and raid sources added (S14 to S16); bare reference fixed (5.2) |
+| 0.1.2 (draft) | 2026-11-22 | Restored SEAL's two-or-three admin limit in 5.2, which 0.1.1 wrongly removed; 3.6 now notes SEAL's separate CAPTCHA option for suspicious accounts, which Discord's help does not name; GitHub Pages serves the guide. |
 
 **Counts in this version.** 109 controls: 66 L1 and 43 L2; 12 CAT I, 45 CAT II, and 52 CAT III; 36 Automated and 73 Manual.
 
@@ -2266,7 +2267,7 @@ Each control cites these keys in its References line. "Judgment" means the recom
 - Check every menu path and setting name in the Discord app. Discord renames settings often.
 - Confirm the SEAL "Moderate" versus Medium verification-level wording and the "members I may not know" DM filter label (control 1.9).
 - Have a second person review the severity ratings and NIST mappings. Both are the author's judgment.
-- Check every SEAL attribution in the Rationale fields against SEAL's pages. Two were checked for 0.1.1; the one in control 5.2 was wrong and is corrected.
+- Check every SEAL attribution in the Rationale fields against SEAL's pages. Checked for 0.1.2 against the SEAL Discord pages: the admin limit in 5.2 (restored) and the CAPTCHA option in 3.6 (flagged). The remaining attributions are not yet checked.
 - Run the audit skill against a real server and note any control the data does not support.
 - Decide whether to map each control ID to a finding in the `discord-server-audit` skill.
 

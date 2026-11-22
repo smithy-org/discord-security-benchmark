@@ -159,14 +159,14 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 
-<div class="run"><div><span>Discord Server Security Configuration Benchmark</span><span class="rs" id="rs">Version 0.1.1 (Draft)</span></div></div>
+<div class="run"><div><span>Discord Server Security Configuration Benchmark</span><span class="rs" id="rs">Version 0.1.2 (Draft)</span></div></div>
 <main class="sheet">
   <header class="cover">
     <div class="org">Community Server Security</div>
     <div class="rule"></div>
     <h1>Discord Server Security Configuration Benchmark</h1>
     <div class="sub">Recommended settings, audit checks, and remediation for server owners, administrators, and moderators</div>
-    <div class="ver">Version 0.1.1 (Draft) &nbsp;·&nbsp; October 28, 2026</div>
+    <div class="ver">Version 0.1.2 (Draft) &nbsp;·&nbsp; November 22, 2026</div>
     <table class="dinfo">
       <tr><th>Controls</th><td>109 recommendations in 10 sections, with appendices A to F</td></tr>
       <tr><th>Profiles</th><td>Level 1 (L1) for every server; Level 2 (L2) added for Moderate and High impact servers</td></tr>
@@ -180,7 +180,7 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
   <section class="front">
     <h2>Abstract</h2>
     <div class="abs"><p>This benchmark gives a secure baseline for a Discord server and, for each recommendation, a check to run and a fix to apply, so an owner can audit and configure a server without guessing.</p>
-<p><strong>Version 0.1.1 (draft).</strong> Versioning follows semantic versioning; see Appendix F.</p>
+<p><strong>Version 0.1.2 (draft).</strong> Versioning follows semantic versioning; see Appendix F.</p>
 </div>
   </section>
 
@@ -1371,11 +1371,11 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 <a class="back" href="#summary-table-of-recommendations">&uarr; Table of controls</a></article>
 <article class="ctl" id="c-3-6"><h3><span class="cid">3.6</span> Turn on Raid Protection alerts</h3><div class="meta"><div class="mc p-l2"><div class="mk">Profile</div><div class="mv">L2</div></div><div class="mc s-ii"><div class="mk">Severity</div><div class="mv">CAT II</div></div><div class="mc "><div class="mk">Assessment</div><div class="mv">Manual</div></div><div class="mc "><div class="mk">Applies to</div><div class="mv">Server</div></div><div class="mc "><div class="mk">NIST 800-53</div><div class="mv">SC-5, SI-4</div></div></div>
 <div class="f f-description"><div class="fl">Description</div><div class="fb"><p>Raid Protection watches join activity. When it detects a raid, it alerts a staff channel and requires CAPTCHA for new joiners for the next hour.</p></div></div>
-<div class="f f-rationale"><div class="fl">Rationale</div><div class="fb"><p>Discord recommends it. The alert tells staff a raid has started, which is the trigger for the CAPTCHA in control 3.7.</p></div></div>
+<div class="f f-rationale"><div class="fl">Rationale</div><div class="fb"><p>Discord recommends it. The alert tells staff a raid has started, which is the trigger for the CAPTCHA in control 3.7. SEAL also names a separate CAPTCHA option for suspicious accounts before they join (<a class="cite" href="#ref-S10" title="Security Alliance (SEAL), Discord account management guide">S10</a>). Discord's help does not name that option, so check the UI before recording it.</p></div></div>
 <div class="f f-impact"><div class="fl">Impact</div><div class="fb"><p>Staff receive raid alerts. While a raid is active, new joiners see a CAPTCHA for an hour.</p></div></div>
 <div class="f f-audit"><div class="fl">Audit</div><div class="fb"><p>Server Settings &gt; Safety Setup &gt; Raid Protection and CAPTCHA: an alert channel is set. If the option is not shown, Raid Protection is not yet available to this server; record Not applicable.</p></div></div>
 <div class="f f-remediation"><div class="fl">Remediation</div><div class="fb"><p>Choose an alert channel and save. Discord is rolling this out gradually, so recheck if it is missing.</p></div></div>
-<div class="f f-references"><div class="fl">References</div><div class="fb"><p><a class="cite" href="#ref-S4" title="Discord Inc., Activity alerts and Security Actions">S4</a>, <a class="cite" href="#ref-S15" title="Discord Inc., How to Protect Your Server from Raids 101">S15</a></p></div></div>
+<div class="f f-references"><div class="fl">References</div><div class="fb"><p><a class="cite" href="#ref-S4" title="Discord Inc., Activity alerts and Security Actions">S4</a>, <a class="cite" href="#ref-S10" title="Security Alliance (SEAL), Discord account management guide">S10</a>, <a class="cite" href="#ref-S15"title="Discord Inc., How to Protect Your Server from Raids 101">S15</a></p></div></div>
 <a class="back" href="#summary-table-of-recommendations">&uarr; Table of controls</a></article>
 <article class="ctl" id="c-3-7"><h3><span class="cid">3.7</span> Require CAPTCHA for everyone during a suspected raid</h3><div class="meta"><div class="mc p-l2"><div class="mk">Profile</div><div class="mv">L2</div></div><div class="mc s-ii"><div class="mk">Severity</div><div class="mv">CAT II</div></div><div class="mc "><div class="mk">Assessment</div><div class="mv">Manual</div></div><div class="mc "><div class="mk">Applies to</div><div class="mv">Server</div></div><div class="mc "><div class="mk">NIST 800-53</div><div class="mv">SC-5, IR-4</div></div></div>
 <div class="f f-description"><div class="fl">Description</div><div class="fb"><p>When a raid is detected, Discord requires new joiners to complete a CAPTCHA for one hour after detection.</p></div></div>
@@ -1535,10 +1535,10 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 <a class="back" href="#summary-table-of-recommendations">&uarr; Table of controls</a></article>
 <article class="ctl" id="c-5-2"><h3><span class="cid">5.2</span> Limit Administrator to one role with very few members</h3><div class="meta"><div class="mc p-l1"><div class="mk">Profile</div><div class="mv">L1</div></div><div class="mc s-i"><div class="mk">Severity</div><div class="mv">CAT I</div></div><div class="mc "><div class="mk">Assessment</div><div class="mv">Automated</div></div><div class="mc "><div class="mk">Applies to</div><div class="mv">Server, Admin</div></div><div class="mc "><div class="mk">NIST 800-53</div><div class="mv">AC-6(5)</div></div></div>
 <div class="f f-description"><div class="fl">Description</div><div class="fb"><p>Administrator grants every permission and bypasses every channel lock.</p></div></div>
-<div class="f f-rationale"><div class="fl">Rationale</div><div class="fb"><p>Discord calls it the most dangerous permission. SEAL says to restrict it to the minimum required roles. The limit of one admin role with very few members, and no bot holding it, is the author's judgment.</p></div></div>
+<div class="f f-rationale"><div class="fl">Rationale</div><div class="fb"><p>Discord calls it the most dangerous permission. SEAL says to restrict it to the minimum required roles and to keep no more than two or three holders, which limits the damage from one compromised account and keeps some redundancy (<a class="cite" href="#ref-S10" title="Security Alliance (SEAL), Discord account management guide">S10</a>). One admin role with very few members, and no bot holding it, is the author's judgment.</p></div></div>
 <div class="f f-impact"><div class="fl">Impact</div><div class="fb"><p>Staff who need only some admin powers must get specific permissions instead.</p></div></div>
 <div class="f f-audit"><div class="fl">Audit</div><div class="fb"><p>Server Settings &gt; Roles: exactly one role, or a documented few, has Administrator. API: count the roles with the Administrator permission. Read role membership from the Members tab, because the audit bot cannot list members without a privileged setting.</p></div></div>
-<div class="f f-remediation"><div class="fl">Remediation</div><div class="fb"><p>Remove Administrator from every other role and grant specific permissions.</p></div></div>
+<div class="f f-remediation"><div class="fl">Remediation</div><div class="fb"><p>Remove Administrator from every other role and grant specific permissions. Keep no more than two or three members with it.</p></div></div>
 <div class="f f-references"><div class="fl">References</div><div class="fb"><p><a class="cite" href="#ref-S2" title="Discord Inc., Permissions on Discord (Moderator Academy 201)">S2</a>, <a class="cite" href="#ref-S10" title="Security Alliance (SEAL), Discord account management guide">S10</a>, <a class="cite" href="#ref-C1" title="Cybersecurity and Infrastructure Security Agency (CISA), Capacity Enhancement Guide: Social Media Account Protection, December 2021">C1</a>, <a class="cite" href="#ref-judgment" title="Author's own addition">Judgment</a></p></div></div>
 <a class="back" href="#summary-table-of-recommendations">&uarr; Table of controls</a></article>
 <article class="ctl" id="c-5-3"><h3><span class="cid">5.3</span> Restrict Manage Server, Manage Roles, Manage Channels, and Manage Webhooks</h3><div class="meta"><div class="mc p-l1"><div class="mk">Profile</div><div class="mv">L1</div></div><div class="mc s-i"><div class="mk">Severity</div><div class="mv">CAT I</div></div><div class="mc "><div class="mk">Assessment</div><div class="mv">Automated</div></div><div class="mc "><div class="mk">Applies to</div><div class="mv">Server</div></div><div class="mc "><div class="mk">NIST 800-53</div><div class="mv">AC-6</div></div></div>
@@ -2952,6 +2952,10 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
   <td>0.1.1 (draft)</td>
   <td>2026-11-22</td>
   <td>Wording and fact fixes from a feasibility review and a source check. Verification exemption claims corrected (2.1, 2.2); CAPTCHA control rewritten around Raid Protection (3.6); raid CAPTCHA attributed to Discord (3.7); SEAL member count in 5.2 replaced with a judgment; account-leveling control rewritten as manual (5.13); verified-apps control rewritten as a staff rule (7.2); command-override lockout step added (7.5); Rules Screening and raid sources added (S14 to S16); bare reference fixed (5.2)</td>
+</tr><tr>
+  <td>0.1.2 (draft)</td>
+  <td>2026-11-22</td>
+  <td>Restored SEAL's two-or-three admin limit in 5.2, which 0.1.1 wrongly removed; 3.6 now notes SEAL's separate CAPTCHA option for suspicious accounts, which Discord's help does not name; GitHub Pages serves the guide.</td>
 </tr>
 </tbody>
 </table></div></figure>
@@ -2961,20 +2965,20 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 <li>Verify Appendix A (permission list and the permissions that require 2FA) and Appendix C (API field names) against the current Discord developer documentation, which could not be fetched while writing.</li>
 <li>Check every menu path and setting name in the Discord app. Discord renames settings often.</li>
 <li>Confirm the SEAL &quot;Moderate&quot; versus Medium verification-level wording and the &quot;members I may not know&quot; DM filter label (control 1.9).</li>
-<li>Have a second person review the severity ratings and NIST mappings. Both are the author's judgment.</li><li>Check every SEAL attribution in the Rationale fields against SEAL's pages. Two were checked for 0.1.1; the one in control 5.2 was wrong and is corrected.</li>
+<li>Have a second person review the severity ratings and NIST mappings. Both are the author's judgment.</li><li>Check every SEAL attribution in the Rationale fields against SEAL's pages. Checked for 0.1.2 against the SEAL Discord pages: the admin limit in 5.2 (restored) and the CAPTCHA option in 3.6 (flagged). The remaining attributions are not yet checked.</li>
 <li>Run the audit skill against a real server and note any control the data does not support.</li>
 <li>Decide whether to map each control ID to a finding in the <code>discord-server-audit</code> skill.</li>
 </ul>
 <p><strong>Versioning.</strong> Patch versions (0.1.x) fix wording or facts. Minor versions (0.x.0) add or change controls. Version 1.0.0 is reached once the open items are closed.</p>
 </section>
 
-  <div class="foot">End of document &nbsp;·&nbsp; Discord Server Security Configuration Benchmark v0.1.1</div>
+  <div class="foot">End of document &nbsp;·&nbsp; Discord Server Security Configuration Benchmark v0.1.2</div>
 </main>
 <a class="totbl" href="#summary-table-of-recommendations" title="Back to the table of controls">&uarr; Table of controls</a>
 <script>
 (function () {
   var rs = document.getElementById('rs');
-  var base = 'Version 0.1.1 (Draft)';
+  var base = 'Version 0.1.2 (Draft)';
   if (!('IntersectionObserver' in window)) return;
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
